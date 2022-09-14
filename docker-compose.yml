@@ -1,0 +1,21 @@
+version: '3.8'
+
+networks:
+  internal:
+    name: '${COMPOSE_PROJECT_NAME}__internal_network'
+
+services:
+  backend-service:
+    image: '${COMPOSE_PROJECT_NAME}_backend:latest'
+    container_name: '${COMPOSE_PROJECT_NAME}__backend'
+    command: ['yarn', 'start:dev']
+    ports:
+      - '${PORT_BACKEND}:${PORT_BACKEND}'
+    volumes:
+      - ./src:/app/src
+      - ./test:/app/test
+      - ./.env:/app/.env
+    networks:
+      - internal
+    environment:
+      VERSION_TAG: '${VERSION_TAG}'
